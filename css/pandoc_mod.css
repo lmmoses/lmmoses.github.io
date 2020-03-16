@@ -15,7 +15,7 @@ article > section {
 }
 
 /* Make byline (date and/or author) small */
-p.byline { font-size: 1.2rem; }
+p.byline { font-size: 1rem; }
 
 h2.author{
   margin-top: 1em;
