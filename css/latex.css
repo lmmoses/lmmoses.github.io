@@ -26,7 +26,7 @@
 
 .latex::selection, .latex span:not(.latex-sup)::selection { text-shadow: 0.03em 0 #92B0D7, -0.03em 0 #92B0D7, 0 0.03em #92B0D7, 0 -0.03em #92B0D7, 0.06em 0 #92B0D7, -0.06em 0 #92B0D7, 0.09em 0 #92B0D7, -0.09aem 0 #92B0D7, 0.12em 0 #92B0D7, -0.12em 0 #92B0D7, 0.15em 0 #92B0D7, -0.15em 0 #92B0D7;
 
-                    background: #92B0D7; }
+                  background: #92B0D7; }
 
 
 
