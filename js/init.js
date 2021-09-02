@@ -15,7 +15,7 @@
 				grid: { gutters: ['2em', 0] }
 			},
 			xlarge: {
-				media: '(max-width: 1680px)',
+				media: '(max-width: 4000px)',
 				href: 'css/style-xlarge.css',
 				containers: 1200
 			},

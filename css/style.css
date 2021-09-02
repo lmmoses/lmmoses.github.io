@@ -123,9 +123,7 @@
 		margin: 0 0 2em 0;
 		padding: 0.5em 0 0.5em 2em;
 	}
-	.optimizeLegibility {
-        text-rendering: optimizeLegibility;
-      }
+	
 	code {
 		background: rgba(144, 144, 144, 0.075);
 		border-radius: 4px;
