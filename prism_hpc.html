@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<!--
+	Spatial by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>LMoses-PRISM_HPC</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body>
+
+		<!-- Header
+			<header id="header" class="skels-layers-fixed">
+				<h1><strong><a href="index.html">Spatial</a></strong> by Templated</h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="generic.html">Generic</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header> -->
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="container">
+					<header class="major special">
+						<h2>PRISM Workshop Submitting Jobs to the Cluster</h2>
+						<p>November, 2021</p>
+						<h4> Laura Moses</h4>
+					</header>
+
+					<!-- Text 
+					<section>
+					<ul>
+						<li><a href="#overview">Overview</a></li>
+						<li><a href="#logging-into-unity">Logging Into Unity</a></li>
+						<li><a href="#interactive">Interactive Sessions</a></li>
+						<li><a href="#submitting-a-computing-job">Submitting a Computing Job</a></li>
+						<li><a href="#copying-unity-output-to-your-local-computer">Copying Unity Output to Your Local Computer</a></li>
+						<li><a href="#other_resources">Other Resoruces</a></li>
+						</ul>-->
+					<header>
+					<h4>Overview</h4>
+					</header>
+					<p>This is a walkthrough of submitting an job to the Unity cluster. This is meant to give you some basic tools and resources for using cluster computing at OSU. Cluster or High Performance Computing most generally refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer in order to solve large problems in science. This tutorial is meant to give you some tools and resources for data management and analysis when time, memory and processing makes it harder to do work on a local machine; your laptop or desktop is not practical. The code presented here is generic and meant to serve as an outline for your own projects. <i>Adam Lauretig</i> put together a tutorial a while back that I am basing portions of this tutorial on <a href="https://github.com/adamlauretig/Unity_Intro" class="uri">https://github.com/adamlauretig/Unity_Intro</a>. <i>Daniel Kent</i> also put together a tutorial on h20 that I base parts of this on on as well.</p>
+					
+					<header>
+					<h4>Arts and Sciences VPN</h4>
+					</header>
+					<p>If you are off-campus, to connect to the Unity cluster using a terminal requires that you connect to the Arts and Sciences VPN. Instructions for the VPN are here: <a href="https://osuasc.teamdynamix.com/TDClient/1929/Portal/KB/ArticleDet?ID=14542" class="uri">https://osuasc.teamdynamix.com/TDClient/1929/Portal/KB/ArticleDet?ID=14542</a></p>
+					<h5>Logging Into Unity</h5>
+					<p> If you are using the OnDemand portal you can log in and use Duo to authenticate without a VPN here: <a href="https://ondemand.asc.ohio-state.edu/" class="uri"> https://ondemand.asc.ohio-state.edu/</a>
+					
+					To log in open a terminal running bash, use your login ID and the specific file names you need to submit, create, copy or run.<i> Make sure to change these commands for your ID and file.</i> Once you are connected to your operating system’s VPN, go ahead and pull up your terminal. If you want, RStudio now has a bash built-in for tasks like this. Enter into your terminal:</p>
+					<pre><code>ssh username.#@unity.asc.ohio-state.edu</code></pre>
+
+					<p>A password section will come up. You won’t be able to see what you are typing, but enter your OSU password and hit enter--this will log you in. Now, you are at your Unity homepage. The first time you log in, the directory should essentially be empty, aside from a welcome file. 
+						
+					<p>The easiest way to create and manage files is to log in to the OnDemand portal and manage files at <a href="https://ondemand.asc.ohio-state.edu/" class="uri"> https://ondemand.asc.ohio-state.edu/</a>. To make the folder your files will be stored in the terminal use:</p>
+					<pre><code>mkdir dir_name</code></pre>
+					<p>Note that <code>dir_name</code> is a name you've chosen for this folder. You can choose any directory name you want.</p>
+					
+					<p>Once you've created a directory for your scripts and data to go; you can now run your script by submitting a job or start an interactive session to debug, test, or importantly <i> setup an enviroment</i> by installing packages you need to run analysis that will be submitted as a batch job. If you are going to use packages that are not installed on your Unity profile before, then you’ll want to start up an interactive session to install or create an enviroment.</p>
+					
+					<h4>Interactive Sessions</h4>
+					<p>By default in interactive mode you get one hour with one core on one compute node with 3 GB of memory. You can get more information on sinteractive by running it with the --help argument. To start an interactive session, enter the following into your terminal session:</p><pre><code>sinteractive --time=00:00:00.
+sinteractive --h
+</code></pre>
+					<p> Note that <code>--time</code> is H:M:S so if you wanted to run an interactive session to debug something quickly in 20 mins, or check if a package is loading; you could request 20 mins by using <code>--time=00:20:00</code>. To get help with the paraementers for an interactive session, use <code>--h</code>.</p>
+					<p>Now change to the directory you want to work in:</p>
+					<pre><code>cd dir_name</code></pre>
+
+					<h5> R Session </h5>
+					<p>And let’s start R up. Unity starts with a basic R setup, with a minimal amount of functionality ready so that computational needs are minimized. To load R:</p>
+					<pre><code>module load gnu/9.1.0
+ml R/4.0.2
+</code></pre>
+				<p>You can use different R versions by loading different gnu or intel and R modules. I just have found these two work well and have all of my R packages installed for them. Now we can start R:</p>
+				<pre><code>R</code></pre>
+
+				<p>You're now running R on the unity cluster and interacting with it in your terminal. So now you can type R code. For example you can now install the necessary packages for your project; here I demonstrate installing the necessary files for the tutorial on github:</p>
+<pre><code>install.packages(&quot;foreach&quot;)
+install.packages(&quot;doParallel&quot;)
+</code></pre>
+				<p>The installs take longer than on your laptop, but will work. You will be asked which CRAN server you want to install from. Just type in the number of the one you prefer and hit enter.Once the installs have gone smoothly, we can close R by typing <code>ctrl + z</code> or <code>cmd + z</code>, depending on your operating system. This adds R packages to the R library associated with your account on the cluster.</p>
+				
+			<h5>Python Session </h5>
+				
+				<p>To do the same for python, we need to load the python module and then, create or activate an enviroment for our project. Clusters at OSU reccomend and work with the Ananconda distribution, and I reccomend using this one. To load python:
+				<pre><code>module load python/3.7-conda4.50
+source activate env_name
+</code></pre>
+To set up your conda enviorment, I reccomend building it locally, exporting the requirements.txt and then building it on the cluster from that file.</p>
+
+		<h4>Submitting a Computing Job</h4>
+		<p>The value in using the cluster is to run jobs that require more time and memory than your local compupter so we want to set up an R script or python script and submit to the cluster’s queue using SLURM which is a job scheduler that manages the resources on the cluster.</p>
+
+		<p>The necessary file for this is a .sh script. Here is an example SLURM script: </p>
+
+		<pre><code>#!/bin/bash
+#SBATCH --time=00:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --job-name=prism_tutorial
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=name.#@osu.edu
+
+ml gnu/9.1.0
+ml R/4.0.2
+#
+cd dir_name
+###commands to run
+#for R:
+Rscript script_name.R</code></pre>
+		<p> Note that the #SBATCH commands are not comments, but parameters for your computing job. <code>script_name.R</code> is the name of the file right now. Change that to your file name. Walltime is the amount of time you think you will need. <code>nodes=1...</code> is the amount of computing resources. Instead of <code>R CMD BATCH</code> you can also run <code>Rscript</code>. Make sure that you change the email to your own. That way you will get the necessary email updates about your job’s status!</p>
+		
+		<p>Once this SLURM script is ready, you can go ahead and upload it the Unity cluster. You’ll also want to upload the R or python script (and any necessary data), otherwise you’ll be asking Unity to run a script it doesn’t have access to. The easiest way is to log in to the OnDemand portal and manage files at <a href="https://ondemand.asc.ohio-state.edu/" class="uri"> https://ondemand.asc.ohio-state.edu/</a>. If you need to upload to Unity from terminal, make sure you are using a terminal session that is not logged-in to Unity, rather a terminal on your local machine. </p>
+		
+		<p>To upload files in terminal use the secure copy paste commnand, <code>scp</code>: </p>
+		<pre><code>scp file_name name.#@unity.asc.ohio-state.edu:dir_name/</code></pre>
+		
+		<p>Now, the SLURM script is available to submit from your Unity profile. Let’s log in and submit. Switching back to our Unity-terminal, we can check our .sh script to make sure it looks good with <code> nano file_name.sh</code>. Nano is just a text editor built into the terminal Unity works through. As long as all looks good, you can exit this text editor with ctrl (command in macs)+z.</p>
+		<p>To submit <code>script_file.sh</code> to Unity’s queue, we enter:</p>
+		<pre><code>sbatch script_file.sh</code></pre>
+		<p>To monitor your job’s status, you can enter:</p>
+		<pre><code>squeue -u name.# </code></pre>
+
+	<h4>Copying Unity Output to Your Local Computer</h4>
+	<p>Once your job finishes running you’ll get an email letting you know if everything worked or not. Assuming your Unity job worked, you’ll want to move the results to your laptop for easier access. <i>I reccomend you do this through the OnDemand portal.</i> If you need to do this from the terminal you can do it with <code>scp</code>, but switch the order of items.</p>
+	<pre><code>scp name.#@unity.asc.ohio-state.edu:dir_name/file .
+scp name.#@unity.asc.ohio-state.edu:dir_name/file /local/directory/ </code></pre>
+	<p>Where the command after scp is the location of your file in Unity. And the second part – . – is just saying place the file in this directory; you can also type the directory location you want to save the file, as shown on the second line above.</p>
+	<p>To end your Unity session, just type <code>logout</code> in your terminal.</p>
+
+
+<h4>Useful Bash Comands:</h5>
+To navigate in terminal, here are some useful bash commands:</p>
+					<pre><code>ls #list files
+					
+pwd #print working directory
+					
+mkdir #make directory
+					
+cd folder_path #change directory to folder_path
+					</code></pre>
+					
+	<p>You can request Unity access here: <a href="https://osuasc.teamdynamix.com/TDClient/1929/Portal/Requests/ServiceDet?ID=23762" class="uri">https://osuasc.teamdynamix.com/TDClient/1929/Portal/Requests/ServiceDet?ID=23762</a></p> 
+
+		<p>Matt Denny's HPC Intro: <a href="https://www.mjdenny.com/workshops/HPC_ICPSR_14.zip" class="uri">https://www.mjdenny.com/workshops/HPC_ICPSR_14.zip</a></p>
+	<p>Ohio Super Computer Getting Started: <a href="https://www.osc.edu/resources/getting_started/hpc_basics" class="uri">https://www.osc.edu/resources/getting_started/hpc_basics</a></p>
+	<p>Alnasir JJ. Fifteen quick tips for success with HPC, i.e., responsibly BASHing that Linux cluster. PLoS Comput Biol. 2021 Aug 5;17(8):e1009207. doi: 10.1371/journal.pcbi.1009207</p>
+
+		</section>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="container">
+				<ul class="icons">
+					<li>&copy; 2021 LMoses</li>
+					<li><a href="https://github.com/lmmoses" class="icon fa-github"></a></li>
+					<li><a href="#" class="icon fa-google"></a></li>
+					<li><a href="https://twitter.com/_lmmoses" class="icon fa-twitter"></a></li>
+					<li>Design: TEMPLATED</li>
+			</div>
+		</footer>
+	
+		</body>
+	</html>
