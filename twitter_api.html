@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<!--
+	Spatial by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>LMoses-twitterAPI</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body>
+
+		<!-- Header
+			<header id="header" class="skels-layers-fixed">
+				<h1><strong><a href="index.html">Spatial</a></strong> by Templated</h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="generic.html">Generic</a></li>
+						<li><a href="elements.html">Elements</a></li>
+					</ul>
+				</nav>
+			</header> -->
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="container">
+					<header class="major special">
+						<h2>Getting Started with the Twitter API in R</h2><br>
+						<p>March, 2022</p>
+						<h4> Laura Moses</h4>
+					</header>
+
+					<!-- Text 
+					<section>
+					<ul>
+						<li><a href="#overview">Overview</a></li>
+						<li><a href="#logging-into-unity">Logging Into Unity</a></li>
+						<li><a href="#interactive">Interactive Sessions</a></li>
+						<li><a href="#submitting-a-computing-job">Submitting a Computing Job</a></li>
+						<li><a href="#copying-unity-output-to-your-local-computer">Copying Unity Output to Your Local Computer</a></li>
+						<li><a href="#other_resources">Other Resoruces</a></li>
+						</ul>-->
+					<header>
+					<h4>Overview</h4>
+					</header>
+					<p>This is a walkthrough of getting started with Twitter's API  (Application Programming Interface) to access tweets and Twitter user data. If you are planning on using Twitter for multiple projects or your dissertation, consider applying for access to the <a href="https://developer.twitter.com/en/products/twitter-api/academic-research" class="uri">Academic Research access </a>. There are numerous pacakages in many different programming languages to access Twitter's API, but this overview will focus on R, specifically using the package <em>rtweet</em>. 
+                    <pre><code>install.packages("rtweet")</code></pre>
+
+                    Please note that when you set up and use the API, you agree to the terms of service for Twitter and their data use policies. Please keep this in mind these as you do research and with the Twitter data.</p>
+					
+					<h5>Connecting to the Twitter API Obtaining and Using Access Tokens </h5>
+					<p> <em>rtweet</em>  makes it really simple to acces the Twitter API by connecting your Twitter user account to an application called <em>rstats2twitterapplication </em>. The first time you try to use <em> rtweet</em> your brower should open a window to authroize your personal Twitter account automatically. This is fine is you're collecting a small amount of data for testing, homework and term papers. However, if you are collecting a lot of data for a longer term project you should set up your own developer account, app and associated set of keys. For more details, see the documentaiton or <em>auth_setup_default()</em>.</p>
+					<pre><code>library(rtweet)</code></pre>
+
+                    <p>To use the Twitter API, you need to create access tokens, these are a set of keys used to authenticate your Twitter app acess. To use the <em>rtweet</em> package, you need toh create and obtain these tokens. RTweet's documentation contains a detailed step by step guide to creating a developer account and creating tokens here: <a href="https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html" class="uri"> click for link to rtweet vignette on API access tokens.</a>
+					</p> 
+                    
+                    <h5>Searching for Tweets </h5>
+                    Twitter has rate limits to the number of search results returned for many of its queries. For searching tweets, the cap is set to 18,000 every 15 minutes. To request more than that, set <code>retryonratelimit = TRUE</code> and <em>rtweet</em> will collect the number specified >18k and implement the for rate limit resets for you. Let's consider an example for searching for 5,000 tweets that contain a specific hashtag, #polisci. To exclude retweets, we will set the option <code>include_rts=FALSE</code> 
+					
+                    <pre><code>ps_tweets = search_tweets("#polisci", n=5000, include_rts=FALSE)</code></pre>
+
+                    <h5>Getting Data on a User </h5>
+                    <p>Another option for data collection is to get the tweets from a specific user. Note that you are limited to the most recent 3,2000 tweets for any user. Below is an example for collecting the 100 most recent tweets from APSA (@APSAtweets)
+                    <pre><code>apsa_tweets = get_timelines("APSAtweets", n = 100) </code></pre>
+                    
+                    You may also want to get the friends for a user (the accounts that they follow) and the follwers (the accounts that follow a user). The following gets the user IDs for friends:
+                    <pre><code>apsa_friends = get_friends("APSAtweets") </code></pre>
+
+                    To get some basic account information on the users APSA follows:
+                    <pre><code>apsa_friends_info = lookup_users(apsa_friends_info$user_id) </code></pre>
+
+                    Similarly, you can get the followers for APSA:
+                    <pre><code>apsa_followers = get_followers("APSAtweets", n=10000) </code></pre>
+                    This returns 10,000 followers for the account. It is possible to collect all followers by setting <code>n=Inf, retryonratelimit=TRUE</code> but for some accounts, like @POTUS who has 19.3 million followers, this can take an increasingly long time, and in some cases may not be tractable.</p>
+                    
+                    <h4>Other Resources </h4>
+                    <p>Twitter's Developer Platform Getting Started Guide: <a href="https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api" class="uri">https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api</a></p>
+                    <p>This quick start guide is based wholly on the documentation for <em>rtweet</em>. More details and use case examples can be found in the documenation at: <a href="https://github.com/ropensci/rtweet" class="uri">https://github.com/ropensci/rtweet</a></p>
+	
+                    <p>The vignette, "Intro to rtweet: Collecting Data" by Michael W. Kearney is also an excellent start guide: <a href="https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html" class="uri">https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html</a></p> 
+
+		
+		</section>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="container">
+				<ul class="icons">
+					<li>&copy; 2021 LMoses</li>
+					<li><a href="https://github.com/lmmoses" class="icon fa-github"></a></li>
+					<li><a href="#" class="icon fa-google"></a></li>
+					<li><a href="https://twitter.com/_lmmoses" class="icon fa-twitter"></a></li>
+					<li>Design: TEMPLATED</li>
+			</div>
+		</footer>
+	
+		</body>
+	</html>
